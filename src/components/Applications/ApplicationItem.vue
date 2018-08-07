@@ -37,11 +37,10 @@
     >
       <q-btn
         round
-        disable
         color="tertiary"
         icon="fas fa-comments"
         class="generic-margin"
-        @click="openChat"
+        :to="{ name: 'applicationChat', params: { applicationId: application.id } }"
       />
       <q-btn
         v-if="application.status === 'pending'"
@@ -78,9 +77,6 @@ export default {
     },
   },
   methods: {
-    openChat () {
-      return console.log('This will lead to the ApplicationChat soon!')
-    },
     pressAccept () {
       Dialog.create({
         title: this.$t('APPLICATION.ACCEPT_CONFIRMATION_HEADER'),

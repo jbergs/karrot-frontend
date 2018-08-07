@@ -6,6 +6,7 @@ import { indexById, withMeta, createMetaModule, metaStatuses } from '@/store/hel
 function initialState () {
   return {
     entries: {},
+    currentApplicationId: null,
   }
 }
 export default {
@@ -28,6 +29,7 @@ export default {
     getByGroupId: state => groupId => {
       return Object.values(state.entries).find(a => a.group === groupId)
     },
+    currentApplication: (state, getters) => getters.get(state.currentApplicationId),
     pending: (state, getters) => Object.keys(state.entries).map(getters.get).filter(a => a.isPending).sort(sortByCreatedAt),
     allNonPending: (state, getters) => Object.keys(state.entries).map(getters.get).filter(a => !a.isPending).sort(sortByCreatedAt),
     ...metaStatuses(['apply']),
@@ -44,6 +46,12 @@ export default {
       async fetchByGroupId ({ commit, getters }, { groupId }) {
         const applicationList = await groupApplications.list({ group: groupId })
         commit('set', applicationList)
+      },
+
+      async fetchOne ({ commit }, { applicationId }) {
+        const application = await groupApplications.get(applicationId)
+        commit('set', [application])
+        commit('setCurrentApplication', applicationId)
       },
 
       async apply ({ commit, dispatch }, data) {
@@ -91,6 +99,9 @@ export default {
     },
   },
   mutations: {
+    setCurrentApplication (state, applicationId) {
+      state.currentApplicationId = applicationId
+    },
     set (state, applicationList) {
       state.entries = indexById(applicationList)
     },

@@ -13,6 +13,8 @@ const DeleteAccount = () => import('@/pages/DeleteAccount')
 const DeleteAccountTitle = () => import('@/components/Settings/DeleteAccountTitle')
 const ApplicationForm = () => import('@/pages/Group/ApplicationForm')
 const ApplicationFormTitle = () => import('@/components/Applications/ApplicationFormTitle')
+const ApplicationChat = () => import('@/pages/Group/ApplicationChat')
+const ApplicationChatTitle = () => import('@/components/Applications/ApplicationChatTitle')
 
 export default [
   {
@@ -131,6 +133,17 @@ export default [
     components: {
       default: ApplicationForm,
       header: ApplicationFormTitle,
+    },
+  },
+  {
+    name: 'applicationChat',
+    path: 'application/:applicationId',
+    meta: {
+      beforeEnter: 'groupApplications/fetchOne',
+    },
+    components: {
+      default: ApplicationChat,
+      header: ApplicationChatTitle,
     },
   },
 ]
